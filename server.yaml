@@ -1,0 +1,236 @@
+#%RAML 1.0
+title: My API
+version: v1
+baseUri: https://192.168.1.4:8080
+
+/login:
+  post:
+    description: Log in and get an access token.
+    body:
+      application/json:
+        example: |
+          {
+            "login": "admin",
+            "password": "admin"
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "Msg": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJhZG1pbiIsImV4cCI6MTcxMTQ3MjQ4OH0.UI79VMNx3uKlqhB3U_VKihm3cmOLDEy0Nrvh8wELmh8"
+              }
+      400:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "Error reading data from request body"}
+              scenario2:
+                - error: {"Msg": "Login or password field is empty"}
+              scenario3:
+                - error: {"Msg": "Wrong password or login"}
+              scenario4:
+                - error: {Msg: "Method not post"}
+
+/register:
+  post:
+    description: Endpoint for user registration
+    body:
+      application/json:
+        example: |
+          {
+            "login": "admin",
+            "password": "admin",
+            "email": "admin@admin.admin",
+            "lastname": "Viktor",
+            "firstname": "Virkori"
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "Msg": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJhZG1pbiIsImV4cCI6MTcxMTQ3MjQ4OH0.UI79VMNx3uKlqhB3U_VKihm3cmOLDEy0Nrvh8wELmh8"
+              }
+      400:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "Error reading data from request body"}
+              scenario2:
+                - error: {"Msg": "One of the values is empty"}
+              scenario3:
+                - error: {"Msg": "Method not post"}
+      500:
+        body:
+          application/json:
+            examples:
+              scenario1:
+               - error: {"Msg": "Login busy"}
+
+
+/api/messages:
+  post:
+    description: Create a new message
+    body:
+      application/json:
+        example: |
+          {
+            "header": "Note",
+            "message": "3.21"
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+               "Msg": "Message sent"
+              }
+      400:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "Error reading data from request body"}
+              scenario2:
+                - error: {"Msg": "Title or message is empty"}
+
+      500:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "Error 500 please try again later"}
+              scenario2:
+                - error: {"Msg": "Error 500 please try again later"}
+
+  get:
+    description: Get all user messages
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+                [{"Id":61,"Login":"admin","header":"1sdda","message":"f5","Created":"2023-07-23 17:54:55","Updated":"2023-07-23 17:54:55"},{"Id":61,"Login":"admin","header":"1sdda","message":"f5","Created":"2023-07-23 17:54:55","Updated":"2023-07-23 17:54:55"}]
+      500:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "Error 500 please try again later"}
+      404:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "The requested resource was not found on the server"}
+
+
+/api/messages/{id}:
+  get:
+    description: Get a specific message by ID
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {"Id":61,"Login":"admin","header":"1sdda","message":"f5","Created":"2023-07-23 17:54:55","Updated":"2023-07-23 17:54:55"}
+      500:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "Error 500 please try again later"}
+      404:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "The requested resource was not found on the server"}
+      403:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "No access"}
+      400:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "Invalid ID"}
+
+  put:
+    description: Update a specific message by ID
+    body:
+      application/json:
+        example: |
+               {
+                "Header": "Xo",
+                "Message": "245.2d"
+               }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {"Id":61,"Login":"admin","header":"Xo","message":"245.2d","Created":"2023-07-23 17:54:55","Updated":"2023-07-25 12:54:55"}
+      500:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "Error 500 please try again later"}
+              scenario2:
+                - error: {"Msg": "Repeat later"}
+      403:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "No access"}
+      400:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "Error reading data from request body"}
+              scenario2:
+                - error: {"Msg": "Title or message is empty"}
+              scenario3:
+                - error: {"Msg": "Invalid ID"}
+
+  delete:
+    description: Delete a specific message by ID
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {"Msg": "Deleted"}
+
+      500:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "Error 500 please try again later"}
+              scenario2:
+                - error: {"Msg": "Repeat later"}
+      403:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "No access"}
+      400:
+        body:
+          application/json:
+            examples:
+              scenario1:
+                - error: {"Msg": "Invalid ID"}
