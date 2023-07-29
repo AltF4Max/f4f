@@ -2,6 +2,7 @@ package config
 import (
   "time"
 )
+var Dsn string = "root:@tcp(127.0.0.1:3306)/something"//"tester:secret@tcp(tesst_db:3306)/tesst""root:@tcp(127.0.0.1:3306)/something"
 var jwtSecret = []byte("f4keraven")
 type ServerConfig struct {
     Addr         string
